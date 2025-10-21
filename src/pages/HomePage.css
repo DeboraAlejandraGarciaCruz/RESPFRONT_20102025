@@ -1,0 +1,273 @@
+/* Importar tipografías */
+@import url('https://fonts.googleapis.com/css2? family=Cormorant+Garamond:wght@300;400;600&family=Poppins:wght@300;400;500;600&display=swap');
+
+/* 🎨 Paleta Halagos */
+:root {
+  --halagos-pink: #f38ca4;
+  --halagos-pink-darker: #aa4b61;
+  --halagos-pink-gradient-start: #f9e0ec;
+  --halagos-pink-gradient-end: #dfa8bf;
+  --halagos-lilac: #e3c6f7;
+  --halagos-cream: #ffffffcb;
+  --halagos-cream-light: #fdf4f9;
+  --halagos-gray: #494243;
+  --halagos-dark: #2c1b1d;
+  --halagos-blue-soft: #b8b8e888;
+}
+
+/* Tipografía general */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--halagos-cream);
+  color: var(--halagos-dark);
+}
+
+h1,
+h2,
+h3 {
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 1px;
+}
+
+/* Hero / Banner */
+.home-hero {
+  background: linear-gradient(rgba(250, 210, 210, 0.97),
+      rgba(255, 255, 255, 0.13)),
+    url('/assets/HALAGOS_BannerP.png') center/cover no-repeat;
+  height: 56vh;
+  /* altura del banner */
+  display: flex;
+  /* justify-content: flex-start;
+    manda el contenido a la izquierda */
+  align-items: center;
+  /* centra verticalmente */
+  padding: 2rem 4rem;
+  border-bottom-left-radius: 3rem;
+  border-bottom-right-radius: 3rem;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+.home-hero-content {
+  max-width: 450px;
+  text-align: center;
+}
+
+.home-hero-content h1 {
+  font-size: 2rem;
+  color: var(--halagos-dark);
+}
+
+.home-hero-content p {
+  color: var(--halagos-gray);
+  margin: 1rem 0;
+  font-size: 1.3rem;
+}
+
+.home-btn {
+  background: var(--halagos-pink);
+  color: #fff;
+  font-weight: 700;
+  padding: 0.75rem 3rem;
+  border-radius: 1.25rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.home-btn:hover {
+  background: var(--halagos-pink-darker);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(243, 140, 164, 0.3);
+}
+
+
+/* Métricas */
+.metrics-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem auto;
+  padding: 1rem;
+}
+
+.metric-card {
+  background: var(--halagos-blue-soft);
+  border-radius: 1.5rem;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Lista de categorías */
+.metric-clickable {
+  cursor: pointer;
+  position: relative;
+}
+
+.category-list {
+  margin-top: 0.75rem;
+  list-style: none;
+  padding: 0;
+  font-size: 0.9rem;
+  color: var(--halagos-gray);
+}
+
+.category-list li {
+  padding: 0.2rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Productos destacados */
+.featured-products {
+  padding: 1rem 3rem;
+  background: linear-gradient(to right,
+      var(--halagos-pink-gradient-start),
+      var(--halagos-pink-gradient-end));
+  border-radius: 3rem;
+  margin: 4rem auto;
+  animation: fadeUp 1.5s ease-in-out;
+}
+
+.featured-products h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: var(--halagos-dark);
+}
+
+/* Grid de productos */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.product-card {
+  background: #fff;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 1rem;
+  text-align: center;
+}
+
+.product-price {
+  font-weight: bold;
+  color: var(--halagos-pink-darker);
+  margin-top: 0.5rem;
+}
+
+/* Hero / Banner principal */
+.home-hero {
+  background: linear-gradient(rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0.541)),
+    url('/assets/HALAGOS_BannerP.png') center/cover no-repeat;
+  padding: 8rem 13rem;
+  text-align: center;
+  border-bottom-left-radius: 3rem;
+  border-bottom-right-radius: 3rem;
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Banner intermedio */
+.mid-banner {
+  margin: 2.5rem auto;
+  /* Ajusta el margen superior e inferior */
+  padding: 15rem 5rem;
+  /* Aumenta el padding para hacer el banner más alto */
+  text-align: center;
+  background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.07)),
+    url('/assets/BANNER_HOR.gif') center/cover no-repeat;
+  /* Asegúrate de que la URL de la imagen sea correcta */
+  border-radius: 1.5rem;
+  color: var(--halagos-dark);
+}
+
+/* 🤝 Sección misión/contacto */
+.about-section {
+  padding: 2rem 5rem;
+  background: var(--halagos-cream-light);
+  border-radius: 3rem;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+.about-grid h2 {
+  color: var(--halagos-dark);
+}
+
+.about-grid p,
+.about-grid li {
+  color: var(--halagos-gray);
+  line-height: 1.6;
+}
+
+.about-grid ul {
+  margin-top: 1rem;
+  padding-left: 1rem;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .home-hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+}

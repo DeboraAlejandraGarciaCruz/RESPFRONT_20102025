@@ -1,0 +1,345 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+:root {
+  --halagos-dark: #333333;
+  --halagos-pink: #ec7a95;
+  --halagos-pink-darker: #ec7694;
+  --halagos-gray: #6c757d;
+  --halagos-light-pink-bg: #fdf5f7;
+  --halagos-pink-gradient-start: #f7a9bb;
+  --halagos-pink-gradient-end: #f38ca4;
+  --transition-speed: 0.3s;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(rgba(250, 210, 210, 0.801), rgba(255, 255, 255, 0.322)),
+    url('/assets/halagos.png') center/cover no-repeat;
+  font-family: 'Poppins', sans-serif;
+}
+
+/*.catalog-header-bg {
+  background-image: linear-gradient(to right, var(--halagos-pink-gradient-start), var(--halagos-pink-gradient-end));
+  padding: 0 1rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+}
+
+.catalog-header-bg h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  color: var(--halagos-dark);
+  margin: 0;
+  font-weight: 600;
+} */
+
+/* CONTENEDOR PRINCIPAL CON MÁRGENES */
+.catalog-main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* FILTROS */
+.catalog-filters {
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.filter-button {
+  flex-shrink: 0;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid var(--halagos-pink);
+  background: rgba(255, 255, 255, 0.74);
+  color: var(--halagos-pink);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+}
+
+.filter-button:hover,
+.filter-button.active {
+  background: var(--halagos-pink);
+  color: white;
+  border-color: var(--halagos-pink);
+}
+
+@media (min-width: 768px) {
+  .catalog-filters {
+    justify-content: center;
+    overflow-x: hidden;
+  }
+
+  .catalog-header-bg h1 {
+    font-size: 2.2rem;
+  }
+}
+
+/* ======================================================= */
+/* GRID DE PRODUCTOS (CARD) CON ANIMACIONES DE IMAGEN */
+/* ======================================================= */
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.product-card {
+  background: rgba(255, 255, 255, 0.527);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  padding: 0.8rem;
+  transition: all var(--transition-speed) ease;
+  cursor: pointer;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.product-image-wrapper {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+/* Estilos para las imágenes con transición */
+.product-image-wrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 5%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity var(--transition-speed) ease;
+}
+
+/* Primera imagen visible por defecto */
+.product-image-wrapper img.first-image {
+  opacity: 1;
+}
+
+/* Segunda imagen oculta por defecto */
+.product-image-wrapper img.second-image {
+  opacity: 0;
+}
+
+/* Efecto hover para desktop - cambia la imagen */
+.product-card:hover .product-image-wrapper img.first-image {
+  opacity: 0;
+}
+
+.product-card:hover .product-image-wrapper img.second-image {
+  opacity: 1;
+}
+
+/* Efecto tap para móviles */
+.product-card.tapped .product-image-wrapper img.first-image {
+  opacity: 0;
+}
+
+.product-card.tapped .product-image-wrapper img.second-image {
+  opacity: 1;
+}
+
+.product-name {
+  margin: 0.5rem 0 0.2rem 0;
+  font-weight: 600;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  color: var(--halagos-dark);
+}
+
+.product-price {
+  font-size: 0.95rem;
+  color: var(--halagos-gray);
+  margin-bottom: 0.6rem;
+}
+
+.product-link {
+  background: var(--halagos-pink);
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.6rem;
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+  font-size: 0.9rem;
+  transition: all var(--transition-speed) ease;
+}
+
+.product-link:hover {
+  background: var(--halagos-pink-darker);
+}
+
+@media (min-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .product-image-wrapper {
+    height: 240px;
+  }
+
+  .product-name {
+    font-size: 1.2rem;
+  }
+}
+
+/* ======================================================= */
+/* PAGINACIÓN */
+/* ======================================================= */
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 2.5rem;
+  padding: 1rem 0;
+  border-top: none;
+}
+
+.pagination-info {
+  font-size: 0.95rem;
+  color: var(--halagos-dark);
+  font-weight: 500;
+  margin-right: 1.5rem;
+  display: none;
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.pagination-button {
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all var(--transition-speed) ease;
+  min-width: 90px;
+  text-align: center;
+}
+
+.pagination-button:not(:disabled) {
+  background: var(--halagos-pink);
+  color: white;
+}
+
+.pagination-button:not(:disabled):hover {
+  background: var(--halagos-pink-darker);
+  transform: translateY(-1px);
+}
+
+.pagination-button:disabled {
+  background: rgba(243, 140, 164, 0.15);
+  color: var(--halagos-pink);
+  cursor: not-allowed;
+  transform: none;
+  opacity: 1;
+}
+
+.pagination-numbers {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.page-number {
+  padding: 0.6rem 0.9rem;
+  border-radius: 0.5rem;
+  background: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all var(--transition-speed) ease;
+  min-width: 40px;
+  text-align: center;
+}
+
+.page-number:not(.active) {
+  border: 1px solid var(--halagos-pink);
+  color: var(--halagos-pink);
+}
+
+.page-number.active {
+  background: var(--halagos-pink);
+  border: 1px solid var(--halagos-pink);
+  color: white;
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .pagination-container {
+    gap: 0.4rem;
+    padding: 1rem 0;
+  }
+
+  .pagination-button {
+    min-width: 70px;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .page-number {
+    min-width: 35px;
+    padding: 0.5rem 0.7rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .pagination-container {
+    justify-content: space-between;
+  }
+
+  .pagination-info {
+    display: block;
+  }
+}
+
+/* ======================================================= */
+/* ESTADO VACÍO Y CARGA */
+/* ======================================================= */
+
+.empty-state,
+.loading-text {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--halagos-gray);
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state-text {
+  font-size: 1.1rem;
+}
+
+.text-center {
+  text-align: center;
+}
