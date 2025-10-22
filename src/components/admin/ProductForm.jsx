@@ -5,7 +5,7 @@ import { useColors } from '../../context/ColorContext';
 import { apiFetch } from '../../utils/api';
 import CategoryForm from './CategoryForm';
 import ColorForm from './ColorForm';
-import { FaTag, FaFileImage } from 'react-icons/fa';
+import { FaTag, FaFileImage, FaTrash } from 'react-icons/fa';
 import { IoCreate } from 'react-icons/io5';
 import {
   MdDescription,
@@ -29,7 +29,7 @@ export default function ProductForm() {
     colors: [],
     categories: [],
     images: [],
-    image: null,
+    existingImages: [],
   });
 
   const [preview, setPreview] = useState([]);
@@ -37,14 +37,21 @@ export default function ProductForm() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
-  // Cargar datos iniciales
+  // 🔹 Lista de imágenes marcadas para eliminar
+  const [deletedImages, setDeletedImages] = useState([]);
+
+  // Helper para manejar URLs Cloudinary o locales
+  const getImageUrl = (img) =>
+    img?.startsWith('http') ? img : `http://localhost:5000/${img}`;
+
+  // ============================ CARGA INICIAL ============================
   useEffect(() => {
     fetchProducts();
     fetchCategories();
     fetchColors();
   }, [fetchProducts, fetchCategories, fetchColors]);
 
-  // Helpers de paginación
+  // ============================ PAGINACIÓN ============================
   const totalProducts = products.length;
   const totalPages = Math.ceil(totalProducts / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -52,130 +59,6 @@ export default function ProductForm() {
   const displayedProducts = [...currentProducts];
   const emptySlots = itemsPerPage - displayedProducts.length;
   for (let i = 0; i < emptySlots; i++) displayedProducts.push(null);
-
-  // Manejo de inputs
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleCheckboxChange = (type, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [type]: prev[type].includes(value)
-        ? prev[type].filter((i) => i !== value)
-        : [...prev[type], value],
-    }));
-  };
-
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files || []);
-    setFormData((prev) => ({
-      ...prev,
-      images: [...prev.images, ...files],
-    }));
-
-    const urls = files.map((f) => URL.createObjectURL(f));
-    setPreview((prev) => [...prev, ...urls]);
-  };
-
-  const resetForm = () => {
-    setFormData({
-      name: '',
-      description: '',
-      price: '',
-      sizes: [],
-      colors: [],
-      categories: [],
-      images: [],
-      image: null,
-    });
-    setPreview([]);
-    setEditingId(null);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const formDataToSend = new FormData();
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append('description', formData.description);
-      formDataToSend.append('price', formData.price);
-
-      formData.sizes.forEach((s) => formDataToSend.append('sizes', s));
-      formData.colors.forEach((c) => formDataToSend.append('colors', c));
-      formData.categories.forEach((cat) =>
-        formDataToSend.append('categories', cat)
-      );
-
-      if (formData.images && formData.images.length > 0) {
-        formData.images.forEach((img) => formDataToSend.append('images', img));
-      }
-
-      let response;
-      if (editingId) {
-        // Editar producto existente
-        response = await apiFetch(`/api/products/${editingId}`, {
-          method: 'PUT',
-          body: formDataToSend,
-        });
-      } else {
-        // Crear producto nuevo
-        response = await apiFetch('/api/products', {
-          method: 'POST',
-          body: formDataToSend,
-        });
-      }
-
-      await fetchProducts();
-      resetForm();
-      alert('✅ Producto guardado correctamente');
-    } catch (error) {
-      console.error('❌ Error al crear o actualizar producto:', error);
-      alert('❌ Error al guardar producto. Revisa consola.');
-    }
-  };
-
-  const handleEdit = (product) => {
-    // Rellenar el formulario con los datos existentes
-    setFormData({
-      name: product.name || '',
-      description: product.description || '',
-      price: product.price || '',
-      sizes: product.sizes || [],
-      colors: (product.colors || []).map((c) => (c._id ? c._id : c)),
-      categories: (product.categories || []).map((cat) =>
-        cat._id ? cat._id : cat
-      ),
-      images: [], // Se vacía para que el usuario pueda subir nuevas si quiere
-    });
-
-    // Mostrar las imágenes actuales como vista previa
-    if (Array.isArray(product.images) && product.images.length > 0) {
-      setPreview(product.images);
-    } else if (product.image) {
-      // Compatibilidad con productos que solo tienen un campo 'image'
-      setPreview([product.image]);
-    } else {
-      setPreview([]);
-    }
-
-    // Guardar el ID del producto que se está editando
-    setEditingId(product._id);
-  };
-
-  const handleDelete = async (id) => {
-    if (!window.confirm('¿Seguro que deseas eliminar este producto?')) return;
-    try {
-      await apiFetch(`/api/products/${id}`, { method: 'DELETE' });
-      await fetchProducts();
-      if (currentProducts.length === 1 && currentPage > 1)
-        setCurrentPage(currentPage - 1);
-    } catch (err) {
-      console.error('Error eliminando producto:', err);
-    }
-  };
 
   const goToPage = (page) => setCurrentPage(page);
   const goToNextPage = () =>
@@ -193,6 +76,155 @@ export default function ProductForm() {
     return pages;
   }, [currentPage, totalPages]);
 
+  // ============================ HANDLERS ============================
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleCheckboxChange = (type, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [type]: prev[type].includes(value)
+        ? prev[type].filter((i) => i !== value)
+        : [...prev[type], value],
+    }));
+  };
+
+  // ============================ IMÁGENES ============================
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    setFormData((prev) => ({ ...prev, images: [...prev.images, ...files] }));
+    const newPreviews = files.map((f) => URL.createObjectURL(f));
+    setPreview((prev) => [...prev, ...newPreviews]);
+  };
+
+  const handleRemovePreview = (index) => {
+    setPreview((prev) => prev.filter((_, i) => i !== index));
+    setFormData((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+  };
+
+  // 🔹 NUEVO: marcar imágenes existentes para eliminar (sin llamar DELETE)
+  const handleRemoveExistingImage = (imageUrl) => {
+    if (!editingId)
+      return alert('Solo puedes borrar imágenes existentes en modo edición.');
+    const confirmDelete = window.confirm(
+      '¿Seguro que deseas eliminar esta imagen?'
+    );
+    if (!confirmDelete) return;
+
+    // Quitarla de la vista
+    setFormData((prev) => ({
+      ...prev,
+      existingImages: prev.existingImages.filter((img) => img !== imageUrl),
+    }));
+
+    // Guardar para enviarla al backend en el próximo PUT
+    setDeletedImages((prev) => [...prev, imageUrl]);
+  };
+
+  // ============================ FORMULARIO ============================
+  const resetForm = () => {
+    setFormData({
+      name: '',
+      description: '',
+      price: '',
+      sizes: [],
+      colors: [],
+      categories: [],
+      images: [],
+      existingImages: [],
+    });
+    setPreview([]);
+    setEditingId(null);
+    setDeletedImages([]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const dataToSend = new FormData();
+      dataToSend.append('name', formData.name);
+      dataToSend.append('description', formData.description);
+      dataToSend.append('price', formData.price);
+
+      formData.sizes.forEach((s) => dataToSend.append('sizes', s));
+      formData.colors.forEach((c) => dataToSend.append('colors', c));
+      formData.categories.forEach((cat) =>
+        dataToSend.append('categories', cat)
+      );
+
+      // 🧩 Agregar imágenes nuevas
+      if (formData.images.length > 0) {
+        formData.images.forEach((img) => dataToSend.append('images', img));
+      }
+
+      // 🧩 Agregar imágenes eliminadas
+      if (deletedImages.length > 0) {
+        const publicIds = deletedImages.map((url) => {
+          const parts = url.split('/');
+          const publicId = parts.slice(-2).join('/').split('.')[0];
+          return publicId;
+        });
+        dataToSend.append('deletedImages', JSON.stringify(publicIds));
+      }
+
+      // 🧩 Crear o actualizar producto
+      if (editingId) {
+        await apiFetch(`/api/products/${editingId}`, {
+          method: 'PUT',
+          body: dataToSend,
+        });
+      } else {
+        await apiFetch('/api/products', { method: 'POST', body: dataToSend });
+      }
+
+      await fetchProducts();
+      resetForm();
+      alert('✅ Producto guardado correctamente');
+    } catch (error) {
+      console.error('Error al guardar producto:', error);
+      alert('❌ Error al guardar producto. Revisa consola.');
+    }
+  };
+
+  // ============================ EDITAR Y ELIMINAR ============================
+  const handleEdit = (product) => {
+    setFormData({
+      name: product.name || '',
+      description: product.description || '',
+      price: product.price || '',
+      sizes: product.sizes || [],
+      colors: (product.colors || []).map((c) => (c._id ? c._id : c)),
+      categories: (product.categories || []).map((cat) =>
+        cat._id ? cat._id : cat
+      ),
+      images: [],
+      existingImages: product.images || [],
+    });
+    setPreview([]);
+    setEditingId(product._id);
+    setDeletedImages([]); // limpiar borradas al editar
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('¿Seguro que deseas eliminar este producto?')) return;
+    try {
+      await apiFetch(`/api/products/${id}`, { method: 'DELETE' });
+      await fetchProducts();
+      if (currentProducts.length === 1 && currentPage > 1)
+        setCurrentPage(currentPage - 1);
+    } catch (err) {
+      console.error('Error eliminando producto:', err);
+    }
+  };
+
+  // ============================ RENDER ============================
   return (
     <div className="product-form-container">
       <div className="product-form-grid">
@@ -335,40 +367,75 @@ export default function ProductForm() {
             <div className="form-group">
               <label className="form-label">
                 <FaFileImage style={{ marginRight: '5px', color: '#f38ca4' }} />
-                Imágenes del producto
+                Subir imágenes (máx. 5)
               </label>
               <input
                 type="file"
-                name="images"
                 accept="image/*"
                 multiple
                 onChange={handleImageChange}
+                className="form-input-file"
               />
-              {preview.length > 0 && (
-                <div className="image-preview-container">
-                  <p className="form-label">Vista previa:</p>
-                  <div className="image-preview-grid">
-                    {preview.map((src, index) => (
-                      <img
-                        key={index}
-                        src={src}
-                        alt={`Vista ${index + 1}`}
-                        className="image-preview"
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
 
+            {/* BOTÓN */}
             <button type="submit" className="submit-button">
-              <IoCreate style={{ color: '#ffffff' }} />{' '}
-              {editingId ? ' Actualizar ' : ' Crear Producto '}
+              {editingId ? 'Actualizar Producto' : 'Crear Producto'}
             </button>
           </form>
+
+          {/* ==================== PREVIEW NUEVAS IMÁGENES ==================== */}
+          {preview.length > 0 && (
+            <div className="image-preview-container">
+              <p className="form-label">Nuevas imágenes:</p>
+              <div className="image-preview-grid">
+                {preview.map((src, index) => (
+                  <div key={index} className="image-preview-wrapper">
+                    <img
+                      src={src}
+                      alt={`Vista ${index + 1}`}
+                      className="image-preview"
+                    />
+                    <button
+                      type="button"
+                      className="delete-preview-btn"
+                      onClick={() => handleRemovePreview(index)}
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ==================== EXISTENTES EN EDICIÓN ==================== */}
+          {formData.existingImages.length > 0 && (
+            <div className="image-preview-container">
+              <p className="form-label">Imágenes actuales:</p>
+              <div className="image-preview-grid">
+                {formData.existingImages.map((img, idx) => (
+                  <div key={idx} className="image-preview-wrapper">
+                    <img
+                      src={getImageUrl(img)}
+                      alt="prev"
+                      className="image-preview"
+                    />
+                    <button
+                      type="button"
+                      className="delete-preview-btn"
+                      onClick={() => handleRemoveExistingImage(img)}
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* LISTA DE PRODUCTOS */}
+        {/* ==================== LISTA DE PRODUCTOS ==================== */}
         <div className="list-card">
           <h3 className="list-title">
             📦 Productos Existentes
@@ -385,13 +452,15 @@ export default function ProductForm() {
                     {(product.images?.length > 0 || product.image) && (
                       <div className="product-image-container">
                         <img
-                          src={product.images?.[0] || product.image}
+                          src={getImageUrl(
+                            product.images?.[0] || product.image
+                          )}
                           alt={product.name}
                           className="product-image-list primary"
                         />
                         {product.images && product.images[1] && (
                           <img
-                            src={product.images[1]}
+                            src={getImageUrl(product.images[1])}
                             alt={`${product.name} alterna`}
                             className="product-image-list secondary"
                           />
@@ -444,17 +513,11 @@ export default function ProductForm() {
                 <div
                   key={`empty-${index}`}
                   className="product-item"
-                  style={{ opacity: 0, pointerEvents: 'none' }}
-                >
-                  <div className="product-content">
-                    <div
-                      className="product-image"
-                      style={{ visibility: 'hidden' }}
-                    ></div>
-                  </div>
-                </div>
+                  style={{ opacity: 0 }}
+                ></div>
               )
             )}
+
             {totalProducts === 0 && (
               <div className="empty-state">
                 <div className="empty-state-icon">📦</div>
@@ -466,6 +529,7 @@ export default function ProductForm() {
             )}
           </div>
 
+          {/* PAGINACIÓN */}
           {totalProducts > 0 && (
             <div className="pagination-container">
               <div className="pagination-info">
