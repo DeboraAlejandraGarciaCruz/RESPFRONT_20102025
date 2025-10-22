@@ -1,6 +1,9 @@
-/* ProductForm.css - Estilos específicos para el formulario de productos */
-@import url('https://fonts.googleapis.com/css2? family=Cormorant+Garamond:wght@300;400;500;700&family=Poppins:wght@300;400;500;600&display=swap');
+/* ProductForm.css - versión final con mini-form y Cloudinary */
 
+/* Fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+/* Variables */
 :root {
   --halagos-pink: #f38ca4;
   --halagos-pink-darker: #aa4b61;
@@ -33,7 +36,7 @@
   }
 }
 
-/* Tarjetas de formulario y lista */
+/* Formulario y lista */
 .form-card,
 .list-card {
   background: var(--halagos-cream-light);
@@ -76,7 +79,6 @@
   align-items: center;
 }
 
-/* Contador */
 .products-count {
   font-size: 0.9rem;
   color: var(--halagos-gray);
@@ -86,7 +88,7 @@
   font-weight: 500;
 }
 
-/* Formulario */
+/* Formulario principal */
 .product-form {
   display: flex;
   flex-direction: column;
@@ -148,23 +150,26 @@
   transform: scale(1.1);
 }
 
-/* Vista previa de imagen */
-.image-preview-container {
-  margin-top: 10px;
-}
-
+/* Vista previa de imágenes */
 .image-preview-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.image-preview-wrapper {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
 .image-preview {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  border-radius: 10px;
   transition: transform 0.2s ease;
 }
 
@@ -172,7 +177,35 @@
   transform: scale(1.05);
 }
 
-/* Botón */
+.delete-preview-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background-color: var(--halagos-pink);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.15s ease;
+}
+
+.image-preview-wrapper:hover .delete-preview-btn {
+  opacity: 1;
+}
+
+.delete-preview-btn:hover {
+  transform: scale(1.1);
+  background-color: var(--halagos-pink-darker);
+}
+
+/* Botones */
 .submit-button {
   background: var(--halagos-pink);
   color: white;
@@ -224,7 +257,7 @@
   height: 100%;
 }
 
-/* Imagenes en la lista (primary + secondary) */
+/* Imagenes productos */
 .product-image-container {
   position: relative;
   width: 95px;
@@ -239,7 +272,6 @@
   height: 100%;
   object-fit: cover;
   transition: opacity 0.35s ease;
-  display: block;
 }
 
 .product-image-list.secondary {
@@ -276,10 +308,6 @@
   font-size: 0.85rem;
   color: var(--halagos-gray);
   line-height: 1.4;
-}
-
-.product-details p {
-  margin: 0.2rem 0;
 }
 
 .product-actions {
@@ -320,118 +348,13 @@
   background: #f1aeb5;
 }
 
-/* Paginación */
-.pagination-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 0 0 0;
-  border-top: 2px solid rgba(243, 140, 164, 0.3);
-  margin-top: auto;
-}
-
-.pagination-info {
-  font-size: 0.9rem;
-  color: var(--halagos-gray);
-  font-weight: 500;
-}
-
-.pagination-controls {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.pagination-button {
-  background: var(--halagos-pink);
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.pagination-button:hover:not(:disabled) {
-  background: var(--halagos-pink-darker);
-  transform: translateY(-1px);
-}
-
-.pagination-button:disabled {
-  background: #f8d7da;
-  color: #b0b0b0;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.pagination-numbers {
-  display: flex;
-  gap: 0.3rem;
-}
-
-.page-number {
-  padding: 0.5rem 0.8rem;
-  border: 2px solid var(--halagos-pink);
-  border-radius: 0.5rem;
-  background: transparent;
-  color: var(--halagos-pink);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 500;
-  min-width: 40px;
-  text-align: center;
-}
-
-.page-number:hover {
-  background: rgba(243, 140, 164, 0.1);
-}
-
-.page-number.active {
-  background: var(--halagos-pink);
-  color: white;
-}
-
-/* Empty state */
-.empty-state {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: var(--halagos-gray);
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.empty-state-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-}
-
-.empty-state-text {
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-}
-
-.empty-state-subtext {
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-/* ======================================================= */
-/* GESTIÓN DE CATEGORÍAS Y COLORES  */
-/* ======================================================= */
-
+/* Mini-forms (categorías y colores) */
 .management-forms {
   display: grid;
   grid-template-columns: 1fr;
   gap: 3.3rem;
   margin-top: 2rem;
-  padding: 1rem 5rem;
+  padding: 1rem 2rem;
 }
 
 @media (min-width: 768px) {
@@ -462,7 +385,7 @@
 .mini-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .mini-form-group {
@@ -484,7 +407,6 @@
   background: white;
   font-family: 'Poppins', sans-serif;
   transition: all 0.3s ease;
-  width: 95%;
 }
 
 .mini-form-input:focus {
@@ -511,6 +433,7 @@
   transform: translateY(-1px);
 }
 
+/* Items list mini-form */
 .items-list {
   margin-top: 1rem;
   max-height: 150px;
@@ -567,19 +490,4 @@
 .mini-delete-button:hover {
   background: #f1aeb5;
   color: white;
-}
-
-/* Scrollbar para las listas */
-.items-list::-webkit-scrollbar {
-  width: 4px;
-}
-
-.items-list::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-}
-
-.items-list::-webkit-scrollbar-thumb {
-  background: var(--halagos-pink);
-  border-radius: 10px;
 }
