@@ -5,6 +5,27 @@ import { useMetrics } from '../context/MetricsContext';
 import { useCategories } from '../context/CategoryContext';
 import './HomePage.css';
 
+// Función auxiliar para manejar imágenes de Cloudinary y locales
+const getImageUrl = (imagePath) => {
+  if (!imagePath) return '/assets/product-placeholder.jpg';
+
+  // Si ya es una URL completa (por ejemplo Cloudinary)
+  if (imagePath.startsWith('http')) {
+    return imagePath;
+  }
+
+  // Si es una ruta relativa guardada en backend
+  if (imagePath.startsWith('/uploads/') || imagePath.startsWith('uploads/')) {
+    return `${import.meta.env.VITE_API_URL || ''}/${imagePath.replace(
+      /^\//,
+      ''
+    )}`;
+  }
+
+  // Si es una imagen en assets locales
+  return `/assets/${imagePath}`;
+};
+
 export default function HomePage() {
   const { products, fetchProducts } = useProducts();
   const { productViews, totalViews } = useMetrics();
@@ -78,19 +99,31 @@ export default function HomePage() {
       <section className="featured-products">
         <h2>Productos Destacados</h2>
         <div className="products-grid">
-          {topProducts.map((product) => (
-            <div key={product.id} className="product-card">
-              <img
-                src={product.image || '/assets/product-placeholder.jpg'}
-                alt={product.name}
-              />
-              <div className="product-info">
-                <h3>{product.name}</h3>
-                <p>{product.description}</p>
-                <span className="product-price">${product.price}</span>
+          {topProducts.map((product) => {
+            const imageSrc =
+              product.images?.length > 0
+                ? getImageUrl(product.images[0])
+                : getImageUrl(product.image);
+
+            return (
+              <div key={product.id} className="product-card">
+                <img
+                  src={imageSrc}
+                  alt={product.name}
+                  className="featured-product-image"
+                  onError={(e) => {
+                    e.target.src = '/assets/product-placeholder.jpg';
+                  }}
+                />
+
+                <div className="product-info">
+                  <h3>{product.name}</h3>
+                  <p>{product.description}</p>
+                  <span className="product-price">${product.price}</span>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
           {topProducts.length === 0 && (
             <p className="no-products">No hay productos destacados aún.</p>
           )}
