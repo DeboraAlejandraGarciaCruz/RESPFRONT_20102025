@@ -1,3 +1,5 @@
+/* CatalogPage.css - CÓDIGO COMPLETO Y CORREGIDO */
+
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;700&family=Poppins:wght@300;400;500;600&display=swap');
 
 :root {
@@ -18,24 +20,7 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
-/*.catalog-header-bg {
-  background-image: linear-gradient(to right, var(--halagos-pink-gradient-start), var(--halagos-pink-gradient-end));
-  padding: 0 1rem;
-  margin-bottom: 2rem;
-  text-align: center;
-  border-bottom-left-radius: 50px;
-  border-bottom-right-radius: 50px;
-}
-
-.catalog-header-bg h1 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.8rem;
-  color: var(--halagos-dark);
-  margin: 0;
-  font-weight: 600;
-} */
-
-/* CONTENEDOR PRINCIPAL CON MÁRGENES */
+/* CONTENEDOR PRINCIPAL CON MÁRGENES (Ya está centrado y limitado) */
 .catalog-main-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -76,10 +61,6 @@ body {
   .catalog-filters {
     justify-content: center;
     overflow-x: hidden;
-  }
-
-  .catalog-header-bg h1 {
-    font-size: 2.2rem;
   }
 }
 
@@ -124,13 +105,20 @@ body {
 
 /* Estilos para las imágenes con transición */
 .product-image-wrapper img {
-  max-width: 100%;
+  max-width: 90%;
   max-height: 100%;
   object-fit: contain;
   border-radius: 5%;
+
+  /* --- CORRECCIÓN CLAVE AQUÍ: CENTRADO DE IMAGEN --- */
   position: absolute;
   top: 0;
-  left: 0;
+  left: 50%;
+  /* Mueve el inicio al centro del contenedor */
+  transform: translateX(-50%);
+  /* Mueve la imagen de vuelta la mitad de su propio ancho */
+  /* ------------------------------------------------ */
+
   transition: opacity var(--transition-speed) ease;
 }
 
@@ -193,13 +181,15 @@ body {
 }
 
 @media (min-width: 768px) {
+
+  /* AJUSTE PARA 4 COLUMNAS Y ESPACIO GRANDE */
   .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
     gap: 1.5rem;
   }
 
   .product-image-wrapper {
-    height: 240px;
+    height: 250px;
   }
 
   .product-name {
