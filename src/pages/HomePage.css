@@ -143,14 +143,14 @@ h3 {
 }
 
 /* Grid de productos */
-.products-grid {
+.home-page .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
   margin-top: 2rem;
 }
 
-.product-card {
+.featured-product-card {
   background: #fff;
   border-radius: 1.5rem;
   overflow: hidden;
@@ -160,12 +160,12 @@ h3 {
   transition: all 0.3s ease;
 }
 
-.product-card:hover {
+.featured-product-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
 }
 
-.product-card img {
+.featured-product-card img {
   width: 100%;
   height: 220px;
   object-fit: cover;
@@ -208,7 +208,7 @@ h3 {
   color: var(--halagos-dark);
 }
 
-/* 🤝 Sección misión/contacto */
+/* Sección misión/contacto */
 .about-section {
   padding: 2rem 5rem;
   background: var(--halagos-cream-light);
