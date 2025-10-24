@@ -35,12 +35,8 @@ h3 {
       rgba(255, 255, 255, 0.13)),
     url('/assets/HALAGOS_BannerP.png') center/cover no-repeat;
   height: 56vh;
-  /* altura del banner */
   display: flex;
-  /* justify-content: flex-start;
-    manda el contenido a la izquierda */
   align-items: center;
-  /* centra verticalmente */
   padding: 2rem 4rem;
   border-bottom-left-radius: 3rem;
   border-bottom-right-radius: 3rem;
@@ -145,11 +141,12 @@ h3 {
 /* Grid de productos */
 .home-page .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 2rem;
   margin-top: 2rem;
 }
 
+/* === Tarjeta de Producto Destacado === */
 .featured-product-card {
   background: #fff;
   border-radius: 1.5rem;
@@ -158,6 +155,7 @@ h3 {
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
+
 }
 
 .featured-product-card:hover {
@@ -165,10 +163,19 @@ h3 {
   box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* === Imagen dentro de la Tarjeta (Centrada y Contenida) === */
 .featured-product-card img {
-  width: 100%;
-  height: 220px;
+  /* Impide el desbordamiento de la tarjeta */
+  max-width: 80%;
+  /* Le damos un ancho, respetando el max-width */
+  width: 52%;
+  height: 230px;
   object-fit: cover;
+
+  /* Centrado Horizontal */
+  display: block;
+  margin: 0 auto;
+  margin-block-start: 20px;
 }
 
 .product-info {
@@ -197,13 +204,10 @@ h3 {
 /* Banner intermedio */
 .mid-banner {
   margin: 2.5rem auto;
-  /* Ajusta el margen superior e inferior */
   padding: 15rem 5rem;
-  /* Aumenta el padding para hacer el banner más alto */
   text-align: center;
   background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.07)),
     url('/assets/BANNER_HOR.gif') center/cover no-repeat;
-  /* Asegúrate de que la URL de la imagen sea correcta */
   border-radius: 1.5rem;
   color: var(--halagos-dark);
 }
