@@ -1,0 +1,63 @@
+/* --- ESTILOS ESPECÍFICOS PARA LA BARRA DE NAVEGACIÓN (NAVBAR) --- */
+
+/* Contenedor principal de la navegación */
+.navbar-halagos {
+  /* Usamos un degradado sutil en lugar de un color sólido para la base */
+  /* NOTA: Estas variables se heredan de App.css/globales */
+  background-image: linear-gradient(to right, var(--halagos-pink-gradient-start), #fdf2f7);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 1rem 2rem;
+  border-bottom: 2px solid var(--halagos-cream-light);
+}
+
+/* Estilo para el logo/nombre "Halagos" */
+.navbar-halagos .logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 1.7rem;
+  color: var(--halagos-dark);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Estilo general de los enlaces de navegación */
+.navbar-halagos a,
+.navbar-halagos button {
+  color: var(--halagos-gray);
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+  padding: 0.1rem 0.75rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+}
+
+/* Efecto hover elegante para los enlaces */
+.navbar-halagos a:hover {
+  color: var(--halagos-pink-darker);
+  background-color: var(--halagos-cream-light);
+}
+
+/* Estilo específico para el botón "Cerrar Sesión" */
+.navbar-halagos .logout-button {
+  background-color: var(--halagos-pink);
+  color: var(--halagos-cream);
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+}
+
+/* Efecto hover para el botón de Cerrar Sesión */
+.navbar-halagos .logout-button:hover {
+  background-color: var(--halagos-pink-darker);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Media query para móviles */
+@media (max-width: 640px) {
+  .navbar-halagos {
+    padding: 1rem 1rem;
+  }
+}
