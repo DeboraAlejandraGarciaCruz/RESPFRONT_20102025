@@ -3,43 +3,56 @@
 
 /* Colores de la marca Halagos */
 :root {
-  --halagos-pink: #f38ca4; /*color del boton*/ 
-  --halagos-pink-darker: #aa4b61; /*color cambio del boton*/
-  --halagos-pink-gradient-start: #f3d4f3;/*Color claro del degradado*/
-  --halagos-pink-gradient-end: #dfa8bf; /*Color fuerte del degradado*/
-  --halagos-cream: #ffffff;  /*fondo fondo*/
-  --halagos-cream-light:  #f5d3e8; /*fondo contenedor*/
+  --halagos-pink: #f38ca4;
+  --halagos-pink-darker: #aa4b61;
+  --halagos-pink-gradient-start: #f3d4f3;
+  --halagos-pink-gradient-end: #dfa8bf;
+  --halagos-cream: #ffffff;
+  --halagos-cream-light: #f5d3e8;
   --halagos-dark: #2c1b1d;
   --halagos-gray: #494243;
 }
 
 /* Base styles */
 body {
-  background: linear-gradient(rgba(250, 210, 210, 0.801),
-        rgba(244, 199, 255, 0.322)),
-      url('/assets/halagos.png') center/cover no-repeat;
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    color: var(--halagos-dark);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-  
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Cormorant Garamond', serif;
+  font-family: 'Poppins', sans-serif;
+  color: var(--halagos-dark);
+  line-height: 1.5;
+  background-color: var(--halagos-cream);
 }
 
-/* Franja de encabezado con degradado */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* Franja de encabezado con degradado (Se mantiene) */
 .contact-header-bg {
   background-image: linear-gradient(to right, var(--halagos-pink-gradient-start), var(--halagos-pink-gradient-end));
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
 }
 
-/* Contenedor principal del formulario */
+/* ---------------------------------------------------- */
+/* --- CONTENEDORES PRINCIPALES Y MÓVIL (Por defecto) --- */
+/* ---------------------------------------------------- */
+
+/* Contenedor principal para la estructura de dos columnas */
+.contact-columns-wrapper {
+  width: 90%;
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 2rem;
+}
+
+/* Contenedor principal del formulario (Estilos base, que aplican a móvil) */
 .contact-form-container {
-  width: 90%; /* Se adapta al 90% del ancho de la pantalla en cualquier tamaño */
-  max-width: 550px; /* Pero nunca será más grande de 500px */
+  width: 90%;
+  max-width: 550px;
   margin: 3rem auto;
   background-color: var(--halagos-cream-light);
   border-radius: 1.5rem;
@@ -47,27 +60,47 @@ h1, h2, h3, h4, h5, h6 {
   padding: 1rem;
 }
 
-/* Contenedor principal del formulario */
-.contact-info-container { 
-  background: linear-gradient(rgba(223, 221, 221, 0.493), rgba(255, 255, 255, 0.322)),
-      url('/assets/BODY(1).png') center/cover no-repeat;
+
+/* --- Contenedor de Información de Contacto (Estilos base) --- */
+.contact-info-container {
+  background:
+    linear-gradient(to top, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.9)),
+    url('/assets/BODY(1).png') center/cover no-repeat;
+  background-color: var(--halagos-cream);
   border-radius: 1.5rem;
   height: auto;
 }
 
-/* Estilos de los inputs del formulario */
-.form-input {
-  background-color: #ffffff;
-  border: 1px solid #f2e5d4;
-  padding: 0.75rem 0.5rem;
-  border-radius: 0.5rem;
-  color: var(--halagos-dark);
-  transition: all 0.2s ease-in-out;
-  width: 100%; /* El input siempre ocupa el ancho del contenedor */
+/* ---------------------------------------------------- */
+/* --- ESTILO DE DOS COLUMNAS (A partir de 768px) --- */
+/* ---------------------------------------------------- */
+@media (min-width: 768px) {
+  .contact-columns-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* SEPARACIÓN HORIZONTAL: 4rem (MUY ANCHO) */
+    gap: 4rem;
+    align-items: center;
+    margin: 4rem auto;
+  }
+
+  /* REGLA CLAVE: Restablecemos el max-width, pero le damos un ancho fijo y lo centramos en la columna */
+  .contact-form-container {
+    /* En lugar de width: 100%, lo fijamos para que no toque los bordes 
+       y usamos margin: auto para centrarlo en la columna izquierda.
+    */
+    width: 95%;
+    /* <--- CAMBIO CLAVE: Usa el 95% del ancho de la columna */
+    max-width: 550px;
+    /* <--- CAMBIO CLAVE: Mantenemos el máximo para que no se estire demasiado */
+    margin: 0 auto;
+    /* <--- CAMBIO CLAVE: Centrar horizontalmente dentro de la columna */
+    padding: 2rem;
+  }
 }
 
 
-/* Estilos de los inputs del formulario */
+/* --- Inputs (Una sola definición) --- */
 .form-input {
   background-color: #ffffff;
   border: 1px solid #eeddc8;
@@ -75,14 +108,8 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 0.5rem;
   color: var(--halagos-dark);
   transition: all 0.2s ease-in-out;
-  /* Ancho responsivo: 50% en móvil, 750px en pantallas grandes */
-  width: 50%;
-}
-
-@media (min-width: 768px) {
-    .form-input {
-        max-width: 750px;
-    }
+  width: 100%;
+  max-width: 750px;
 }
 
 .form-input:focus {
@@ -97,11 +124,11 @@ h1, h2, h3, h4, h5, h6 {
 
 
 textarea.form-input {
-  height: 100px; 
-  resize: vertical; 
+  height: 100px;
+  resize: vertical;
 }
 
-/* Botón con dimensiones fijas */
+/* Botón con dimensiones fijas (Se mantiene) */
 .button-halagos-fixed-size {
   background-color: var(--halagos-pink);
   color: rgb(253, 253, 253);
@@ -114,232 +141,253 @@ textarea.form-input {
   font-size: medium;
 }
 
-.button-halagos-fixed-size:hover {
-  background-color: var(--halagos-pink-darker);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+/* --- REFINAMIENTO DE TEXTO EN EL CONTENEDOR DE INFORMACIÓN --- */
+.contact-info-container p {
+  color: var(--halagos-dark);
+  line-height: 1.6;
 }
 
-.button-halagos-fixed-size:disabled {
-  background-color: #fbd3df;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+/* Custom styles (utilidades de apariencia) */
+.text-black-contact {
+  color: #202224;
 }
 
-  
-  /* Utility classes */
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .container {
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-    
-    .grid-cols-1 {
-      grid-template-columns: repeat(1, minmax(0, 1fr));
-    }
-  }
-  
-  @media (min-width: 768px) {
-    .md\:grid-cols-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    
-    .md\:grid-cols-3 {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-    
-    .md\:grid-cols-4 {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-    
-    .md\:flex-row {
-      flex-direction: row;
-    }
-  }
-  
-  @media (min-width: 1024px) {
-    .lg\:grid-cols-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    
-    .lg\:grid-cols-3 {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-  
-  @media (min-width: 1280px) {
-    .xl\:grid-cols-4 {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-  }
-  
-
-/* Estilos para la barra de navegación */
-.bg-halagos-navbar {
-  background-color: var(--halagos-pink-gradient-start);
+.rounded-lg {
+  border-radius: 0.5rem;
 }
-  /* Custom styles */
-  .min-h-screen { min-height: 100vh; }
-  .text-gray-600 { color: #4b5563; }
-  .text-gray-500 { color: #6b7280; }
-  .text-blue-600 { color: #eb25a9; }
-  .text-blue-700 { color: #58d81d; } /* Custom styles */
-  .bg-blue-600 { background-color: #2563eb; }
-  .bg-blue-700 { background-color: #d81d74; }  /* Custom styles */
-  .bg-blue-100 { background-color: #dbeafe; }
-  
-  .rounded-lg { border-radius: 0.5rem; }
-  .rounded-md { border-radius: 0.375rem; }
-  .shadow-sm { box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05); }
-  .shadow-md { box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); }
-  
-  .transition-colors { transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out; }
-  .transition-shadow { transition: box-shadow 0.15s ease-in-out; }
-  
-  .grid { display: grid; }
-  .flex { display: flex; }
-  .inline-flex { display: inline-flex; }
-  .inline-block { display: inline-block; }
-  .block { display: block; }
-  
-  .items-center { align-items: center; }
-  .justify-between { justify-content: space-between; }
-  .justify-center { justify-content: center; }
-  .text-center { text-align: center; }
-  
-  .space-x-1 > * + * { margin-left: 0.25rem; }
-  .space-x-2 > * + * { margin-left: 0.5rem; }
-  .space-x-3 > * + * { margin-left: 0.75rem; }
-  .space-x-4 > * + * { margin-left: 1rem; }
-  .space-x-6 > * + * { margin-left: 1.5rem; }
-  .space-x-8 > * + * { margin-left: 2rem; }
-  
-  .space-y-2 > * + * { margin-top: 0.5rem; }
-  .space-y-3 > * + * { margin-top: 0.75rem; }
-  .space-y-4 > * + * { margin-top: 1rem; }
-  .space-y-6 > * + * { margin-top: 1.5rem; }
-  .space-y-8 > * + * { margin-top: 2rem; }
-  
-  .gap-4 { gap: 1rem; }
-  .gap-6 { gap: 1.5rem; }
-  .gap-8 { gap: 2rem; }
-  
-  /* Padding and margin */
-  .p-1 { padding: 0.25rem; }
-  .p-2 { padding: 0.5rem; }
-  .p-3 { padding: 0.75rem; }
-  .p-4 { padding: 1rem; }
-  .p-6 { padding: 1.5rem; }
-  .p-8 { padding: 2rem; }
-  
-  .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
-  .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
-  .px-4 { padding-left: 1rem; padding-right: 1rem; }
-  .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
-  .px-8 { padding-left: 2rem; padding-right: 2rem; }
-  
-  .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
-  .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-  .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-  .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
-  .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
-  .py-16 { padding-top: 4rem; padding-bottom: 4rem; }
-  
-  .mb-1 { margin-bottom: 0.25rem; }
-  .mb-2 { margin-bottom: 0.5rem; }
-  .mb-3 { margin-bottom: 0.75rem; }
-  .mb-4 { margin-bottom: 1rem; }
-  .mb-6 { margin-bottom: 1.5rem; }
-  .mb-8 { margin-bottom: 2rem; }
-  .mt-2 { margin-top: 0.5rem; }
-  .mt-4 { margin-top: 1rem; }
-  .mt-8 { margin-top: 2rem; }
-  .mt-16 { margin-top: 4rem; }
-  
-  .max-w-md { max-width: 28rem; }
-  .max-w-2xl { max-width: 42rem; }
-  .mx-auto { margin-left: auto; margin-right: auto; }
-  
-  /* Sizing */
-  .w-4 { width: 1rem; }
-  .w-5 { width: 1.25rem; }
-  .w-8 { width: 2rem; }
-  .w-10 { width: 2.5rem; }
-  .w-12 { width: 3rem; }
-  .w-16 { width: 4rem; }
-  .w-32 { width: 8rem; }
-  .w-full { width: 100%; }
-  
-  .h-2 { height: 0.5rem; }
-  .h-4 { height: 1rem; }
-  .h-5 { height: 1.25rem; }
-  .h-8 { height: 2rem; }
-  .h-10 { height: 2.5rem; }
-  .h-12 { height: 3rem; }
-  .h-16 { height: 4rem; }
-  .h-32 { height: 8rem; }
-  .h-48 { height: 12rem; }
-  .h-96 { height: 24rem; }
-  
 
-  
-  /* Borders */
-  /*.border { border-width: 1px; }
-  .border-b { border-bottom-width: 1px; }
-  .border-b-2 { border-bottom-width: 2px; }
-  .border-gray-100 { border-color: #f3f4f6; }
-  .border-gray-200 { border-color: #9ca1ac; }
-  .border-gray-300 { border-color: #dbd1d9; }
-  .border-transparent { border-color: transparent; }
-  .border-blue-500 { border-color: #eb51bd; } 
-  
-  .rounded { border-radius: 0.25rem; }
-  .rounded-full { border-radius: 9999px; }
-  
-  /* Object fit 
-  .object-cover { object-fit: cover; }
-  
-  /* Overflow 
-  .overflow-hidden { overflow: hidden; }
-  .overflow-x-auto { overflow-x: auto; }
-  
-  /* Flex utilities 
-  .flex-1 { flex: 1 1 0%; }
-  .flex-col { flex-direction: column; }
-  
-  /* Focus states 
-  .focus\:ring-2:focus { box-shadow: 0 0 0 2px rgba(246, 59, 162, 0.5); }
-  .focus\:ring-blue-500:focus { box-shadow: 0 0 0 2px rgba(246, 59, 162, 0.5); }
-  .focus\:border-transparent:focus { border-color: transparent; }
-  
-  /* Hover states 
-  .hover\:bg-gray-50:hover { background-color: #f9fafb; }
-  .hover\:bg-gray-100:hover { background-color: #f3f4f6; }
-  .hover\:bg-gray-400:hover { background-color: #727780; }
-  .hover\:bg-blue-100:hover { background-color: #dbeafe; }
-  .hover\:bg-blue-700:hover { background-color: #f38ca4; }
-  .hover\:bg-green-700:hover { background-color: #15803d; }
-  .hover\:bg-red-100:hover { background-color: #fee2e2; }
-  .hover\:text-blue-600:hover { color: #ca25eb; }
-  .hover\:text-blue-700:hover { color: #aa4b61; }
-  .hover\:text-gray-700:hover { color: #374151; }
-  .hover\:text-red-700:hover { color: #b91c9f; }
-  
-  /* Disabled states 
-  .disabled\:opacity-50:disabled { opacity: 0.5; }
-  .disabled\:cursor-not-allowed:disabled { cursor: not-allowed; }
-  
-    */
-  
- 
-  
-  
+.rounded-md {
+  border-radius: 0.375rem;
+}
+
+.shadow-sm {
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.transition-colors {
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+}
+
+.transition-shadow {
+  transition: box-shadow 0.15s ease-in-out;
+}
+
+.grid {
+  display: grid;
+}
+
+.flex {
+  display: flex;
+}
+
+.inline-flex {
+  display: inline-flex;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.block {
+  display: block;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.space-x-1>*+* {
+  margin-left: 0.25rem;
+}
+
+.space-x-2>*+* {
+  margin-left: 0.5rem;
+}
+
+.space-x-3>*+* {
+  margin-left: 0.75rem;
+}
+
+.space-x-4>*+* {
+  margin-left: 1rem;
+}
+
+.space-x-6>*+* {
+  margin-left: 1.5rem;
+}
+
+.space-x-8>*+* {
+  margin-left: 2rem;
+}
+
+.space-y-2>*+* {
+  margin-top: 0.5rem;
+}
+
+.space-y-3>*+* {
+  margin-top: 0.75rem;
+}
+
+.space-y-4>*+* {
+  margin-top: 1rem;
+}
+
+.space-y-6>*+* {
+  margin-top: 1.5rem;
+}
+
+.space-y-8>*+* {
+  margin-top: 2rem;
+}
+
+.p-1 {
+  padding: 0.25rem;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+.p-3 {
+  padding: 0.75rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.p-6 {
+  padding: 1.5rem;
+}
+
+.p-8 {
+  padding: 2rem;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.mb-8 {
+  margin-bottom: 2rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mt-8 {
+  margin-top: 2rem;
+}
+
+.mt-16 {
+  margin-top: 4rem;
+}
+
+.max-w-md {
+  max-width: 28rem;
+}
+
+.max-w-2xl {
+  max-width: 42rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.w-full {
+  width: 98%;
+}
