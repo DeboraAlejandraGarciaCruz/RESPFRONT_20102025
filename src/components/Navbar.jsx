@@ -1,6 +1,7 @@
 // src/components/Navbar.jsx
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import './Navbar.css';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -21,45 +22,35 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-halagos-navbar shadow-md px-6 py-4 flex justify-between items-center">
-      <Link to="/" className="text-xl font-bold text-halagos-dark">
-        Mi Tienda
+    // CAMBIO CLAVE: Usamos 'navbar-halagos' y ajustamos el padding/estructura
+    <nav className="navbar-halagos flex justify-between items-center">
+      <Link to="/" className="logo">
+        Halagos
       </Link>
-      <div className="space-x-4">
-        <Link
-          to="/catalogo"
-          onClick={handleCatalogClick}
-          className="text-halagos-dark hover:text-halagos-gray"
-        >
+      <div className="space-x-6 flex items-center">
+        {' '}
+        {/* Aumentamos el espacio y centramos los ítems */}
+        <Link to="/catalogo" onClick={handleCatalogClick} className="main-link">
           Catálogo
         </Link>
-        <Link
-          to="/contacto"
-          className="text-halagos-dark hover:text-halagos-gray"
-        >
+        <Link to="/contacto" className="main-link">
           Contacto
         </Link>
-
         {user ? (
           <>
-            <Link
-              to="/admin"
-              className="text-halagos-dark hover:text-halagos-gray"
-            >
+            <Link to="/admin" className="">
               Admin
             </Link>
             <button
               onClick={handleLogout}
-              className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition-colors"
+              // CLASE ESPECÍFICA para el botón
+              className="logout-button"
             >
               Cerrar Sesión
             </button>
           </>
         ) : (
-          <Link
-            to="/admin"
-            className="text-halagos-dark hover:text-halagos-gray"
-          >
+          <Link to="/admin" className="">
             Admin
           </Link>
         )}
