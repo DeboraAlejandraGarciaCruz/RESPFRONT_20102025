@@ -12,3 +12,4 @@ Detalles: Ya elimina imagenes desde la previsualizacion y al actualizar el produ
 Detalles: Se arreglaron las dimensiones de imagenes en los productos destacados y se eliminaron los 
 conflictos de nombres que existian entre el Home y el Catalogo.
 
+Z
